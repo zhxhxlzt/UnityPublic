@@ -16,7 +16,7 @@ public class EventMgr : MonoBehaviour {
     private Dictionary<EventType, List<Action<EventArgs>>> m_registers = new Dictionary<EventType, List<Action<EventArgs>>>();
 
     private void Start() {
-        Singleton.GetComInstance<TimerMgr>().AddTimer(0, new Functor(HandleEvent), -1, 0);
+        //Singleton.GetComInstance<TimerMgr>().AddTimer(0, new Functor(HandleEvent), -1, 0);
     }
 
     /// <summary>
@@ -44,8 +44,8 @@ public class EventMgr : MonoBehaviour {
     /// <summary>
     /// 移除注册
     /// </summary>
-    /// <param name="func"></param>
-    /// <param name="eventType"></param>
+    /// <param name="func">   </param>
+    /// <param name="eventType">    </param>
     public void UnregisterEvent( Action<EventArgs> func, EventType? eventType = null ) {
         // 从所有注册的委托中移除func
         if( eventType == null ) {

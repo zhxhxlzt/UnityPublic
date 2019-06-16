@@ -10,7 +10,7 @@ public class TestEvent : MonoBehaviour
     public int sendCnt = 100;
     void Start()
     {
-        m_eventMgr = Singleton.GetComInstance<EventMgr>();
+        m_eventMgr = Singleton.GetInstance<EventMgr>();
         m_eventMgr.RegisterEvent(EventType.Event_One, ShowMove);
     }
 

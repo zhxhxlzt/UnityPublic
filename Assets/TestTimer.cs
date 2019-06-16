@@ -1,25 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class TestTimer : MonoBehaviour
 {
-    public TimerMgr m_timerMgr;
-    public Timer timer1;
-    // Start is called before the first frame update
-    void Start()
+    public int count = 0;
+
+    System.Action func;
+
+    private void Start()
     {
-        m_timerMgr.AddTimer(1, new Functor(InstantiateCube));
-        timer1 = m_timerMgr.AddTimer(2, new Functor<string>(SayHello, "hello" + Time.deltaTime), -1, 1);
-        m_timerMgr.AddTimer(5, new Functor(delegate { timer1.Discard(); }));
-    }
-    
-    void InstantiateCube() {
-        Debug.Log("创建Cube");
-        GameObject.CreatePrimitive(PrimitiveType.Cube);
+        for (int i = 0; i < 100000; i++)
+        {
+            float delay = Random.Range(0.02f, 100);
+            int repeat = Random.Range(-1, 10);
+            Timer.AddTimer(delay, () => { count++; }, repeat, delay);
+        }
     }
 
-    void SayHello( string words ) {
-        Debug.Log("Say Words: " + words);
-    }
+    private void TestCall() => count++;
+
+
 }

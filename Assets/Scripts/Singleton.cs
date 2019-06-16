@@ -1,59 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 单例管理类，如果想使用某类唯一的单例，则通过此类提供的方法获取实例
 /// </summary>
-public class Singleton : MonoBehaviour
+public class Singleton
 {
-    private static Singleton m_instance;
-    private static Dictionary<string, object> m_SingletonClass = new Dictionary<string, object>();
+    static Dictionary<Type, object> m_singletons = new Dictionary<Type, object>();
+    static GameObject m_root;
 
-    /// <summary>
-    /// 此类唯一存在，如有多创建的，销毁新创建的
-    /// </summary>
-    private void Awake() {
-        if (m_instance == null ) {
-            m_instance = this;
+    Singleton() { }
+
+    public static T GetInstance<T>() where T : class
+    {
+        var type = typeof(T);
+
+        // 继承MonoBehaviour的单例组件
+        if (type.IsSubclassOf(typeof(MonoBehaviour)))
+        {
+            if (m_root == null)
+            {
+                m_root = new GameObject("SingletonComponentRoot");
+                GameObject.DontDestroyOnLoad(m_root);
+            }
+            var com = m_root.GetComponent(type);
+            if (com == null)
+            {
+                com = m_root.AddComponent(type);
+            }
+            return com as T;
         }
-        else {
-            Destroy(this);
+
+        // 非组件类单例
+        if (!m_singletons.TryGetValue(type, out object singleton))
+        {
+            singleton = Activator.CreateInstance(type, true);
+            m_singletons.Add(type, singleton);
         }
+
+        return (T)singleton;
     }
 
-    /// <summary>
-    /// 获取继承MonoBehaviour的组件的单例
-    /// </summary>
-    /// <typeparam name="T"> MonoBehaviour</typeparam>
-    /// <returns></returns>
-    public static T GetComInstance<T>() where T : MonoBehaviour {
-        var com = m_instance.GetComponent<T>();
-        if (com == null ) {
-            com = m_instance.gameObject.AddComponent<T>();
-        }
-        return com;
-    }
-    
-    /// <summary>
-    /// 获取普通类的单例
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static T GetClsInstance<T>() where T : class, new() {
-        string key = typeof(T).Name;
-        if( m_SingletonClass.TryGetValue(key, out object ins )) {
-            return ins as T;
-        }
-        var t = new T();
-        m_SingletonClass.Add(key, t);
-        return t;
-    }
-    
-    /// <summary>
-    /// 销毁单例管理类时，销毁它管理的所有单例类实例
-    /// </summary>
-    public void Dispose() {
-        Destroy(gameObject);
+    public static void Clear()
+    {
+        GameObject.Destroy(m_root);
+        m_singletons.Clear();
     }
 }
+
