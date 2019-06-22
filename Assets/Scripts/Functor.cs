@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-/// <summary>
-/// 将一个对象的成员函数包一层，取消对原对象的引用，避免原对象无法销毁
-/// </summary>
+
 public static class Functor
 {
     public static Action Wrap<T0>( Action<T0> func, T0 t0 )

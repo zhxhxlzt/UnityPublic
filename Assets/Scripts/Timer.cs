@@ -4,11 +4,11 @@ using UnityEngine;
 using System;
 
 
-public class Timer : MonoBehaviour
+public class Timer : ObjectBehaviour
 {
-    private LinkedList<TimerNode> m_TimerNodeList = new LinkedList<TimerNode>();
-    private LinkedListNode<TimerNode> m_Last = new LinkedListNode<TimerNode>(null);
-    private static Timer m_Timer;
+    private LinkedList<TimerNode> m_TimerNodeList;
+    private LinkedListNode<TimerNode> m_Last;
+    private static Timer m_GlobalTimer;
   
     /// <summary>
     /// 添加定时器
@@ -20,14 +20,23 @@ public class Timer : MonoBehaviour
     /// <returns></returns>
     public static TimerNode AddTimer( float delay, Action cbFunc, int repeat = 0, float interval = 0 )
     {
-        if (m_Timer == null) m_Timer = Singleton.GetInstance<Timer>();
+        if (m_GlobalTimer == null) m_GlobalTimer = Singleton.GetInstance<Timer>();
         var node = new TimerNode(delay, cbFunc, repeat, interval);
-        m_Timer.m_TimerNodeList.AddLast(node);
+        m_GlobalTimer.m_TimerNodeList.AddLast(node);
         return node;
     }
 
-    private void FixedUpdate()
+    public float TimeUsage { get; private set; }
+
+    public Timer()
     {
+        m_TimerNodeList = new LinkedList<TimerNode>();
+        m_Last = new LinkedListNode<TimerNode>(null);
+    }
+
+    protected override void FixedUpdate()
+    {
+        var begin = Time.realtimeSinceStartup;
         m_TimerNodeList.AddLast(m_Last);    // 统一边界操作
         for (var it = m_TimerNodeList.First; it != m_TimerNodeList.Last;)
         {
@@ -57,6 +66,7 @@ public class Timer : MonoBehaviour
             it = it.Next;   // 访问下一个
         }
         m_TimerNodeList.RemoveLast();
+        TimeUsage = Time.realtimeSinceStartup - begin;
     }
 }
 
@@ -68,8 +78,8 @@ public class TimerNode
     private int m_Repeat;
     private float m_Interval;
 
-    public bool IsExpired { get { return Time.time > m_Expire; } }
-    public bool IsRepeat { get { return (m_Repeat == -1 || m_Repeat > 0); } }
+    public bool IsExpired { get { return Time.time >= m_Expire; } }
+    public bool IsRepeat { get { return (m_Repeat <= -1 || m_Repeat > 0); } }
     public bool IsDiscard { get; private set; }
 
     public TimerNode( float delay, Action cbFunc, int repeat, float interval )

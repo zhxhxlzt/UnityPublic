@@ -9,17 +9,16 @@ public class TestCountTime : MonoBehaviour
     {
         float t;
         var begin = Time.realtimeSinceStartup;
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 100000; i++)
         {
-            TestFunc();
+            t = 0;
         }
         Debug.Log("empty cycle time usage:" + (Time.realtimeSinceStartup - begin));
         
         begin = Time.realtimeSinceStartup;
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 100000; i++)
         {
-            TestFunc();
-            t = Time.realtimeSinceStartup;
+            t = Time.time;
         }
         Debug.Log("count time cycle time usage:" + (Time.realtimeSinceStartup - begin));
 

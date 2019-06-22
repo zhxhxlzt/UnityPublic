@@ -62,19 +62,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\EventArgs.cs" />
     <Compile Include="Assets\Scripts\EventMgr.cs" />
+    <Compile Include="Assets\Scripts\EventType.cs" />
     <Compile Include="Assets\Scripts\Functor.cs" />
+    <Compile Include="Assets\Scripts\ObjectBehaviour.cs" />
+    <Compile Include="Assets\Scripts\ObjectBehaviourMgr.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
-    <Compile Include="Assets\TestCountTime.cs" />
-    <Compile Include="Assets\TestEvent.cs" />
-    <Compile Include="Assets\TestFunctor.cs" />
-    <Compile Include="Assets\TestLinkedList.cs" />
-    <Compile Include="Assets\TestMonoSingleton.cs" />
-    <Compile Include="Assets\TestSingleton.cs" />
-    <Compile Include="Assets\TestTagAndDontDestroy.cs" />
-    <Compile Include="Assets\TestTimer.cs" />
-    <Compile Include="Assets\TestWeakRef.cs" />
+    <Compile Include="Assets\TestScripts\TestCountTime.cs" />
+    <Compile Include="Assets\TestScripts\TestEvent.cs" />
+    <Compile Include="Assets\TestScripts\TestFunctor.cs" />
+    <Compile Include="Assets\TestScripts\TestLinkedList.cs" />
+    <Compile Include="Assets\TestScripts\TestMonoSingleton.cs" />
+    <Compile Include="Assets\TestScripts\TestObjectBehaviour.cs" />
+    <Compile Include="Assets\TestScripts\TestSingleton.cs" />
+    <Compile Include="Assets\TestScripts\TestTagAndDontDestroy.cs" />
+    <Compile Include="Assets\TestScripts\TestTimer.cs" />
+    <Compile Include="Assets\TestScripts\TestWeakRef.cs" />
+    <Compile Include="Assets\TestScripts\TimerCtrl.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/UnityProjects/UnityPublic/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

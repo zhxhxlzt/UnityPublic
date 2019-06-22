@@ -8,6 +8,8 @@ public class TestEvent : MonoBehaviour
     private EventMgr m_eventMgr;
     // Start is called before the first frame update
     public int sendCnt = 100;
+    public float x;
+    public float y;
     void Start()
     {
         m_eventMgr = Singleton.GetInstance<EventMgr>();
@@ -20,11 +22,12 @@ public class TestEvent : MonoBehaviour
         for(int i = 0; i < sendCnt; ++i ) {
             m_eventMgr.SendEvent(EventType.Event_One, new MoveData());
         }
-        
     }
 
     void ShowMove(EventArgs args ) {
         MoveData data = args as MoveData;
+        x = Mathf.Asin(data.x);
+        y = Mathf.Acos(data.y);
         Debug.LogFormat("hero move: {0} {1}", data.x, data.y);
     }
 
