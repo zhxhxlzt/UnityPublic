@@ -8,8 +8,8 @@ using System;
 /// </summary>
 public class Singleton
 {
-    static Dictionary<Type, object> m_singletons = new Dictionary<Type, object>();
-    static GameObject m_root;
+    private static Dictionary<Type, object> m_singletons = new Dictionary<Type, object>();
+    private static GameObject m_root;
 
     Singleton() { }
 

@@ -6,14 +6,13 @@ using System;
 public class ObjectBehaviour : IDisposable
 {
     private BehaviourFunc m_behaviour;
-    private ObjectBehaviourMgr m_mgr;
+    private static ObjectBehaviourMgr m_mgr;
     private bool m_enable;
     protected ObjectBehaviour()
     {
         m_enable = true;
         OnEnable();
         Awake();
-        m_mgr = Singleton.GetInstance<ObjectBehaviourMgr>();
         m_behaviour = new BehaviourFunc()
         {
             obj = this,
@@ -22,6 +21,7 @@ public class ObjectBehaviour : IDisposable
             UpdateHandler = Update,
             LateUpdateHandler = LateUpdate
         };
+        if (m_mgr == null) m_mgr = Singleton.GetInstance<ObjectBehaviourMgr>();
         m_mgr.RegisterObjectBehaviour(this, m_behaviour);
     }
     protected virtual void Awake() { }
@@ -63,12 +63,13 @@ public class ObjectBehaviour : IDisposable
             }
         }
     }
-    public class BehaviourFunc
-    {
-        public ObjectBehaviour obj;
-        public Action StartHandler;
-        public Action FixedUpdateHandler;
-        public Action UpdateHandler;
-        public Action LateUpdateHandler;
-    }
+}
+
+public class BehaviourFunc
+{
+    public ObjectBehaviour obj;
+    public Action StartHandler;
+    public Action FixedUpdateHandler;
+    public Action UpdateHandler;
+    public Action LateUpdateHandler;
 }

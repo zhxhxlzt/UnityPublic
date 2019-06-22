@@ -31,7 +31,7 @@ public class TestEvent : MonoBehaviour
         Debug.LogFormat("hero move: {0} {1}", data.x, data.y);
     }
 
-    class MoveData : EventArgs {
+    class MoveData : ScriptEventArgs {
         public float x = 1;
         public float y = 1;
         public MoveData() {

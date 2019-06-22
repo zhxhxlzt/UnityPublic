@@ -12,35 +12,33 @@ using System.Linq;
 public class EventMgr : MonoBehaviour
 {
     public enum EventRcvMode { Sync, Async }    // 同步调用，异步调用
-    private Queue<EventData> m_eventQueue;      // 消息队列
-    private Dictionary<EventType, List<Action<EventArgs>>> m_registers; // 事件接收者
+    private Queue<ScriptEventArgs> m_eventQueue;      // 消息队列
+    private Dictionary<EventType, ScriptUnityEvent> m_registers; // 事件接收者
     private float m_timeLimit = 0.01f;
 
     private EventMgr()
     {
-        m_eventQueue = new Queue<EventData>();
-        m_registers = new Dictionary<EventType, List<Action<EventArgs>>>();
+        m_eventQueue = new Queue<ScriptEventArgs>();
+        m_registers = new Dictionary<EventType, ScriptUnityEvent>();
     }
 
     /// <summary>
     /// 发送事件
     /// </summary>
     /// <param name="args"></param>
-    public void SendEvent( EventType type, EventArgs args, EventRcvMode mode = EventRcvMode.Sync)
+    public void SendEvent( EventType type, ScriptEventArgs args, EventRcvMode mode = EventRcvMode.Sync)
     {
-        if (args == null) args = EventArgs.Empty;
+        if (args == null) args = ScriptEventArgs.Empty;
+        args.eventType = type;
         if (mode == EventRcvMode.Async)
         {
-            m_eventQueue.Enqueue(new EventData(type, args));
+            m_eventQueue.Enqueue(args);
         }
         else
         {
             if (m_registers.TryGetValue(type, out var registers))
             {
-                foreach (var reg in registers)
-                {
-                    reg.Invoke(args);
-                }
+                registers.Invoke(args);
             }
         }
     }
@@ -50,16 +48,14 @@ public class EventMgr : MonoBehaviour
     /// </summary>
     /// <param name="type"></param>
     /// <param name="func"></param>
-    public void RegisterEvent( EventType type, Action<EventArgs> func )
+    public void RegisterEvent( EventType type, UnityAction<ScriptEventArgs> func )
     {
-        if (m_registers.TryGetValue(type, out var registers))
+        if (!m_registers.TryGetValue(type, out var listeners))
         {
-            registers.Add(func);
+            listeners = new ScriptUnityEvent();
+            m_registers.Add(type, listeners);
         }
-        else
-        {
-            m_registers.Add(type, new List<Action<EventArgs>>() { func });
-        }
+        listeners.AddListener(func);
     }
 
     /// <summary>
@@ -67,11 +63,11 @@ public class EventMgr : MonoBehaviour
     /// </summary>
     /// <param name="func">   </param>
     /// <param name="eventType">    </param>
-    public void UnregisterEvent( Action<EventArgs> func, EventType eventType )
+    public void UnregisterEvent( EventType eventType, UnityAction<ScriptEventArgs> func )
     {
-        if (m_registers.TryGetValue(eventType, out var registers))
+        if (m_registers.TryGetValue(eventType, out var listeners))
         {
-            registers.Remove(func);
+            listeners.RemoveListener(func);
         }
     }
 
@@ -80,30 +76,15 @@ public class EventMgr : MonoBehaviour
         float expires = Time.realtimeSinceStartup + m_timeLimit;
         while (m_eventQueue.Count > 0 && Time.realtimeSinceStartup < expires)
         {
-            var unityEvent = m_eventQueue.Dequeue();
-            if (m_registers.TryGetValue(unityEvent.type, out var registers))
+            var args = m_eventQueue.Dequeue();
+            if (m_registers.TryGetValue(args.eventType, out var listeners))
             {
-                foreach (var reg in registers)
-                {
-                    reg?.Invoke(unityEvent.args);
-                }
+                listeners.Invoke(args);
             }
         }
     }
 
-    /// <summary>
-    /// 消息单元，具体消息通过继承EventArgs的类来传递
-    /// </summary>
-    class EventData
-    {
-        public EventType type { get; private set; }
-        public EventArgs args { get; private set; }
-        public EventData( EventType type, EventArgs args )
-        {
-            this.type = type;
-            this.args = args;
-        }
-    }
+    class ScriptUnityEvent : UnityEvent<ScriptEventArgs> { }
 }
 
 

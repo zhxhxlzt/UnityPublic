@@ -34,6 +34,13 @@ namespace TestObjectBehaviourNameSpace
             m_actor = actor;
         }
 
+        protected override void Start()
+        {
+            HotKeyMgr.RegisterHotKey(KeyCode.W, Test1);
+        }
+
+        private void Test1() => Debug.Log("Click");
+
         protected override void FixedUpdate()
         {
             float x = Input.GetAxis("Horizontal");

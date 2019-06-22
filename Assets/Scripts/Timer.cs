@@ -26,6 +26,13 @@ public class Timer : ObjectBehaviour
         return node;
     }
 
+    public TimerNode AddLocalTimer( float delay, Action func, int repeat = 0, float interval = 0)
+    {
+        var node = new TimerNode(delay, func, repeat, interval);
+        m_TimerNodeList.AddLast(node);
+        return node;
+    }
+    
     public float TimeUsage { get; private set; }
 
     public Timer()
@@ -68,52 +75,54 @@ public class Timer : ObjectBehaviour
         m_TimerNodeList.RemoveLast();
         TimeUsage = Time.realtimeSinceStartup - begin;
     }
-}
 
-public class TimerNode
-{
-    private float m_Expire;
-
-    private Action m_Func;
-    private int m_Repeat;
-    private float m_Interval;
-
-    public bool IsExpired { get { return Time.time >= m_Expire; } }
-    public bool IsRepeat { get { return (m_Repeat <= -1 || m_Repeat > 0); } }
-    public bool IsDiscard { get; private set; }
-
-    public TimerNode( float delay, Action cbFunc, int repeat, float interval )
+    public class TimerNode
     {
-        delay = Mathf.Max(delay, Time.fixedDeltaTime);
-        m_Expire = Time.time + delay;
-        m_Func = cbFunc;
-        m_Repeat = repeat;
-        m_Interval = interval;
-    }
+        private float m_Expire;
 
-    public void Invoke()
-    {
-        m_Func?.Invoke();
-        if (m_Repeat == 0)
+        private Action m_Func;
+        private int m_Repeat;
+        private float m_Interval;
+
+        public bool IsExpired { get { return Time.time >= m_Expire; } }
+        public bool IsRepeat { get { return (m_Repeat <= -1 || m_Repeat > 0); } }
+        public bool IsDiscard { get; private set; }
+
+        public TimerNode( float delay, Action cbFunc, int repeat, float interval )
+        {
+            delay = Mathf.Max(delay, Time.fixedDeltaTime);
+            m_Expire = Time.time + delay;
+            m_Func = cbFunc;
+            m_Repeat = repeat;
+            m_Interval = interval;
+        }
+
+        public void Invoke()
+        {
+            m_Func?.Invoke();
+            if (m_Repeat == 0)
+            {
+                IsDiscard = true;
+            }
+            else if (m_Repeat > 0)
+            {
+                m_Repeat -= 1;
+            }
+        }
+
+        public void Rebuild()
+        {
+            m_Expire = Time.time + Mathf.Max(m_Interval, Time.fixedDeltaTime);
+        }
+
+        public void Discard()
         {
             IsDiscard = true;
         }
-        else if (m_Repeat > 0)
-        {
-            m_Repeat -= 1;
-        }
-    }
-
-    public void Rebuild()
-    {
-        m_Expire = Time.time + Mathf.Max(m_Interval, Time.fixedDeltaTime);
-    }
-
-    public void Discard()
-    {
-        IsDiscard = true;
     }
 }
+
+
 
 
 

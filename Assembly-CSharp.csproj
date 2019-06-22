@@ -66,6 +66,8 @@
     <Compile Include="Assets\Scripts\EventMgr.cs" />
     <Compile Include="Assets\Scripts\EventType.cs" />
     <Compile Include="Assets\Scripts\Functor.cs" />
+    <Compile Include="Assets\Scripts\HotKeyMgr.cs" />
+    <Compile Include="Assets\Scripts\MainManager.cs" />
     <Compile Include="Assets\Scripts\ObjectBehaviour.cs" />
     <Compile Include="Assets\Scripts\ObjectBehaviourMgr.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />

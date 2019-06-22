@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class ObjectBehaviourMgr : MonoBehaviour
 {
-    private Dictionary<ObjectBehaviour, ObjectBehaviour.BehaviourFunc> m_behaviourPool;
-    private Dictionary<ObjectBehaviour, ObjectBehaviour.BehaviourFunc> m_prepareAdd;
-    private HashSet<ObjectBehaviour> m_prepareDel;
+    private Dictionary<ObjectBehaviour, BehaviourFunc> m_behaviourPool;
+    private Stack<BehaviourFunc> m_prepareAdd;
+    private Stack<ObjectBehaviour> m_prepareDel;
     
     private ObjectBehaviourMgr()
     {
-        m_behaviourPool = new Dictionary<ObjectBehaviour, ObjectBehaviour.BehaviourFunc>();
-        m_prepareAdd = new Dictionary<ObjectBehaviour, ObjectBehaviour.BehaviourFunc>();
-        m_prepareDel = new HashSet<ObjectBehaviour>();
+        m_behaviourPool = new Dictionary<ObjectBehaviour, BehaviourFunc>();
+        m_prepareAdd = new Stack<BehaviourFunc>();
+        m_prepareDel = new Stack<ObjectBehaviour>();
     }
     private void PrepareTurn()
     {
-        foreach (var item in m_prepareAdd)
+        while( m_prepareAdd.Count != 0)
         {
-            item.Value.StartHandler.Invoke();
-            m_behaviourPool.Add(item.Key, item.Value);
+            var p = m_prepareAdd.Pop();
+            p.StartHandler.Invoke();
+            m_behaviourPool.Add(p.obj, p);
         }
-        m_prepareAdd.Clear();
     }
     private void FinishTurn()
     {
-        foreach (var e in m_prepareDel)
+        while (m_prepareDel.Count != 0)
         {
-            m_behaviourPool.Remove(e);
+            var p = m_prepareDel.Pop();
+            m_behaviourPool.Remove(p);
         }
-        m_prepareDel.Clear();
     }
     private void FixedUpdate()
     {
@@ -54,16 +54,16 @@ public class ObjectBehaviourMgr : MonoBehaviour
         }
         FinishTurn();
     }
-    public void RegisterObjectBehaviour( ObjectBehaviour obj, ObjectBehaviour.BehaviourFunc behaviour )
+    public void RegisterObjectBehaviour( ObjectBehaviour obj, BehaviourFunc behaviour )
     {
         // 添加到“待添加”字典中，防止在update过程中添加破坏迭代器
-        if (!m_behaviourPool.ContainsKey(obj) && !m_prepareAdd.ContainsKey(obj))
+        if (!m_behaviourPool.ContainsKey(obj) && !m_prepareAdd.Contains(behaviour))
         {
-            m_prepareAdd.Add(obj, behaviour);
+            m_prepareAdd.Push(behaviour);
         }
     }
     public void UnRegisterObjectBehaviour( ObjectBehaviour obj )
     {
-        m_prepareDel.Add(obj);
+        if (!m_prepareDel.Contains(obj)) m_prepareDel.Push(obj);
     }
 }
