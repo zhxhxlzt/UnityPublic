@@ -8,7 +8,7 @@ public class Timer : ObjectBehaviour
 {
     private LinkedList<TimerNode> m_TimerNodeList;
     private LinkedListNode<TimerNode> m_Last;
-    private static Timer m_GlobalTimer;
+    //private static Timer m_GlobalTimer;
   
     /// <summary>
     /// 添加定时器
@@ -20,9 +20,9 @@ public class Timer : ObjectBehaviour
     /// <returns></returns>
     public static TimerNode AddTimer( float delay, Action cbFunc, int repeat = 0, float interval = 0 )
     {
-        if (m_GlobalTimer == null) m_GlobalTimer = Singleton.GetInstance<Timer>();
+        var timer = Singleton.GetInstance<Timer>();
         var node = new TimerNode(delay, cbFunc, repeat, interval);
-        m_GlobalTimer.m_TimerNodeList.AddLast(node);
+        timer.m_TimerNodeList.AddLast(node);
         return node;
     }
 

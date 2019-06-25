@@ -7,7 +7,7 @@ using System;
 public class ScriptEventArgs : EventArgs
 {
     public new static readonly ScriptEventArgs Empty = new ScriptEventArgs();
-    public EventType eventType;
+    public string EventName;
 }
 
 public class EventArg<T> : ScriptEventArgs

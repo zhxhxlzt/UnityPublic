@@ -72,6 +72,8 @@
     <Compile Include="Assets\Scripts\ObjectBehaviourMgr.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
+    <Compile Include="Assets\Scripts\TransformExtAPI.cs" />
+    <Compile Include="Assets\TestScaleTime.cs" />
     <Compile Include="Assets\TestScripts\TestCountTime.cs" />
     <Compile Include="Assets\TestScripts\TestEvent.cs" />
     <Compile Include="Assets\TestScripts\TestFunctor.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Assets\TestScripts\TestSingleton.cs" />
     <Compile Include="Assets\TestScripts\TestTagAndDontDestroy.cs" />
     <Compile Include="Assets\TestScripts\TestTimer.cs" />
+    <Compile Include="Assets\TestScripts\TestTransformFind.cs" />
     <Compile Include="Assets\TestScripts\TestWeakRef.cs" />
     <Compile Include="Assets\TestScripts\TimerCtrl.cs" />
     <Reference Include="Unity.Timeline.Editor">

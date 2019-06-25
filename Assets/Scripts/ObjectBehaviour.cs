@@ -56,7 +56,7 @@ public class ObjectBehaviour : IDisposable
                 else
                 {
                     OnDisable();
-                    m_behaviour.FixedUpdateHandler = () => { };
+                    m_behaviour.FixedUpdateHandler = () => { };     // 替换Update委托更新达到Disable效果
                     m_behaviour.UpdateHandler = () => { };
                     m_behaviour.LateUpdateHandler = () => { };
                 }
