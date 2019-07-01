@@ -10,6 +10,7 @@ public class ObjectBehaviour : IDisposable
     private bool m_enable;
     protected ObjectBehaviour()
     {
+        if (m_mgr == null) m_mgr = Singleton.GetInstance<ObjectBehaviourMgr>();
         m_enable = true;
         OnEnable();
         Awake();
@@ -21,7 +22,6 @@ public class ObjectBehaviour : IDisposable
             UpdateHandler = Update,
             LateUpdateHandler = LateUpdate
         };
-        if (m_mgr == null) m_mgr = Singleton.GetInstance<ObjectBehaviourMgr>();
         m_mgr.RegisterObjectBehaviour(this, m_behaviour);
     }
     protected virtual void Awake() { }
@@ -32,6 +32,18 @@ public class ObjectBehaviour : IDisposable
     protected virtual void Update() { }
     protected virtual void LateUpdate() { }
     protected virtual void OnDestroy() { }
+    public Coroutine StartCoroutine( IEnumerator routine)
+    {
+        return m_mgr.StartCoroutine(routine);
+    }
+    public void StopCoroutine( Coroutine routine)
+    {
+        m_mgr.StopCoroutine(routine);
+    }
+    public void StopCoroutine( IEnumerator routine)
+    {
+        m_mgr.StopCoroutine(routine);
+    }
     public void Dispose()
     {
         OnDisable();

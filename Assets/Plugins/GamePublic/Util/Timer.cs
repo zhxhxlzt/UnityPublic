@@ -13,7 +13,7 @@ public class Timer : ObjectBehaviour
     /// <summary>
     /// 添加定时器
     /// </summary>
-    /// <param name="delay"> 调用延迟时间</param>
+    /// <param name="delay"> 调用延迟时间, 0为下帧调用</param>
     /// <param name="cbFunc"> 回调函数</param>
     /// <param name="repeat"> 重复次数</param>
     /// <param name="interval"> 重复调用间隔</param>
@@ -26,13 +26,21 @@ public class Timer : ObjectBehaviour
         return node;
     }
 
+    /// <summary>
+    /// 添加TimerNode到本地创建的定时器
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <param name="func"></param>
+    /// <param name="repeat"></param>
+    /// <param name="interval"></param>
+    /// <returns></returns>
     public TimerNode AddLocalTimer( float delay, Action func, int repeat = 0, float interval = 0)
     {
         var node = new TimerNode(delay, func, repeat, interval);
         m_TimerNodeList.AddLast(node);
         return node;
     }
-    
+
     public float TimeUsage { get; private set; }
 
     public Timer()
@@ -72,7 +80,7 @@ public class Timer : ObjectBehaviour
             }
             it = it.Next;   // 访问下一个
         }
-        m_TimerNodeList.RemoveLast();
+        m_TimerNodeList.RemoveLast();   // 移除冗余节点
         TimeUsage = Time.realtimeSinceStartup - begin;
     }
 
@@ -96,7 +104,7 @@ public class Timer : ObjectBehaviour
             m_Repeat = repeat;
             m_Interval = interval;
         }
-
+        
         public void Invoke()
         {
             m_Func?.Invoke();
@@ -110,11 +118,17 @@ public class Timer : ObjectBehaviour
             }
         }
 
+        /// <summary>
+        /// 重建定时器节点内部计时
+        /// </summary>
         public void Rebuild()
         {
             m_Expire = Time.time + Mathf.Max(m_Interval, Time.fixedDeltaTime);
         }
 
+        /// <summary>
+        /// 直接废弃，不到时调用
+        /// </summary>
         public void Discard()
         {
             IsDiscard = true;

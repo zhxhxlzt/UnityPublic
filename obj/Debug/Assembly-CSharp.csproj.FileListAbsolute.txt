@@ -418,3 +418,4 @@ E:\UnityProjects\UnityPublic\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.
 E:\UnityProjects\UnityPublic\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 E:\UnityProjects\UnityPublic\obj\Debug\Assembly-CSharp.dll
 E:\UnityProjects\UnityPublic\obj\Debug\Assembly-CSharp.pdb
+E:\UnityProjects\UnityPublic\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb

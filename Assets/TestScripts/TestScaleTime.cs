@@ -8,7 +8,6 @@ public class TestScaleTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -20,6 +19,8 @@ public class TestScaleTime : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        List<int> abc = new List<int>();
     }
+
+    
 }

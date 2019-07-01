@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// 为ObjectBehaviour提供“生命周期”
+/// </summary>
 public class ObjectBehaviourMgr : MonoBehaviour
 {
     private Dictionary<ObjectBehaviour, BehaviourFunc> m_behaviourPool;
