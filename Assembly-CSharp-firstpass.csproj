@@ -66,13 +66,19 @@
     <Compile Include="Assets\Plugins\GamePublic\Util\EventMgr.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\EventType.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\Functor.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\HotKeyMenu.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\HotKeyMgr.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\MainManager.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\ObjectBehaviour.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\ObjectBehaviourMgr.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\ObjectPoolManager.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\Singleton.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\SourceManager.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\Timer.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\TransformExtAPI.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\UIForm.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\UILogicBase.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\UIManager.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/UnityProjects/UnityPublic/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
