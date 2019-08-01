@@ -68,6 +68,7 @@
     <Compile Include="Assets\Plugins\GamePublic\Util\Functor.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\HotKeyMenu.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\HotKeyMgr.cs" />
+    <Compile Include="Assets\Plugins\GamePublic\Util\LongPressToggle.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\MainManager.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\ObjectBehaviour.cs" />
     <Compile Include="Assets\Plugins\GamePublic\Util\ObjectBehaviourMgr.cs" />
