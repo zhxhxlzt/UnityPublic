@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using EventType = ScriptEvent.EventType;
 public class TestEvent : MonoBehaviour
 {
     private EventMgr m_eventMgr;
